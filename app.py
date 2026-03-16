@@ -161,6 +161,55 @@ background:linear-gradient(#38bdf8,#a78bfa);
 border-radius:10px;
 }
 
+.profile-container{
+display:flex;
+justify-content:center;
+gap:60px;
+margin-top:80px;
+}
+
+.profile-card{
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+}
+
+.profile-card img{
+width:150px;
+height:150px;
+border-radius:10px;
+border:3px solid transparent;
+}
+
+.profile-card:hover{
+transform:scale(1.15);
+}
+
+.profile-card:hover img{
+border:3px solid white;
+}
+
+.profile-name{
+margin-top:10px;
+font-size:18px;
+color:#aaa;
+}
+
+.profile-card:hover .profile-name{
+color:white;
+}
+
+.netflix-title{
+text-align:center;
+font-size:48px;
+margin-top:80px;
+color:white;
+}
+
+
+
+
+
 </style>
 """, unsafe_allow_html=True)
 # -----------------------------------------
@@ -207,26 +256,36 @@ if st.session_state.page=="landing":
 # -----------------------------------------
 
 if st.session_state.page=="profiles":
+    st.markdown(
+    """
+    <h1 style='color:red;font-size:40px;font-weight:bold'>
+    SMARTCHARGE
+    </h1>
+    """,
+    unsafe_allow_html=True
+    )
 
-    st.title("Who's analyzing today?")
+    st.markdown("<h1 class='netflix-title'>Who's analyzing today?</h1>", unsafe_allow_html=True)
 
-    col1,col2,col3=st.columns(3)
+    col1,col2,col3 = st.columns([1,1,1])
 
     with col1:
-        if st.button("👨‍💻 Jashith"):
+        st.image("https://i.imgur.com/7yUvePI.png", width=150)
+        if st.button("Jashith"):
             st.session_state.page="dashboard"
             st.rerun()
 
     with col2:
-        if st.button("👩‍🔬 Analyst"):
+        st.image("https://i.imgur.com/9XnK9QK.png", width=150)
+        if st.button("Analyst"):
             st.session_state.page="dashboard"
             st.rerun()
 
     with col3:
-        if st.button("➕ Add Profile"):
+        st.image("https://cdn-icons-png.flaticon.com/512/1828/1828817.png", width=150)
+        if st.button("Add Profile"):
             st.session_state.page="signup"
             st.rerun()
-
 # -----------------------------------------
 # SIGNUP PAGE
 # -----------------------------------------
