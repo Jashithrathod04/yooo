@@ -210,6 +210,66 @@ color:white;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.profile-wrapper{
+display:flex;
+justify-content:center;
+gap:60px;
+margin-top:80px;
+}
+
+.profile-card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(16px);
+padding:20px;
+border-radius:20px;
+text-align:center;
+width:180px;
+cursor:pointer;
+transition:0.35s;
+border:1px solid rgba(255,255,255,0.15);
+}
+
+.profile-card:hover{
+transform:scale(1.15);
+box-shadow:0 0 25px #38bdf8;
+}
+
+.profile-img{
+width:140px;
+height:140px;
+border-radius:12px;
+object-fit:cover;
+}
+
+.profile-name{
+margin-top:10px;
+font-size:18px;
+color:#aaa;
+}
+
+.profile-card:hover .profile-name{
+color:white;
+}
+
+
 </style>
 """, unsafe_allow_html=True)
 # -----------------------------------------
@@ -256,34 +316,52 @@ if st.session_state.page=="landing":
 # -----------------------------------------
 
 if st.session_state.page=="profiles":
+
     st.markdown(
-    """
-    <h1 style='color:red;font-size:40px;font-weight:bold'>
-    SMARTCHARGE
-    </h1>
-    """,
-    unsafe_allow_html=True
-    )
+    "<h1 style='text-align:center;font-size:50px;'>Who's analyzing today?</h1>",
+    unsafe_allow_html=True)
 
-    st.markdown("<h1 class='netflix-title'>Who's analyzing today?</h1>", unsafe_allow_html=True)
+    col1,col2,col3 = st.columns(3)
 
-    col1,col2,col3 = st.columns([1,1,1])
-
+    # Profile 1
     with col1:
-        st.image("https://i.imgur.com/7yUvePI.png", width=150)
-        if st.button("Jashith"):
+
+        st.markdown("""
+        <div class="profile-card">
+        <img class="profile-img" src="https://i.imgur.com/7yUvePI.png">
+        <div class="profile-name">Jashith</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(" ", key="p1"):
             st.session_state.page="dashboard"
             st.rerun()
 
+    # Profile 2
     with col2:
-        st.image("https://i.imgur.com/9XnK9QK.png", width=150)
-        if st.button("Analyst"):
+
+        st.markdown("""
+        <div class="profile-card">
+        <img class="profile-img" src="https://i.imgur.com/9XnK9QK.png">
+        <div class="profile-name">Analyst</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(" ", key="p2"):
             st.session_state.page="dashboard"
             st.rerun()
 
+    # Add Profile
     with col3:
-        st.image("https://cdn-icons-png.flaticon.com/512/1828/1828817.png", width=150)
-        if st.button("Add Profile"):
+
+        st.markdown("""
+        <div class="profile-card">
+        <img class="profile-img" src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png">
+        <div class="profile-name">Add Profile</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(" ", key="p3"):
             st.session_state.page="signup"
             st.rerun()
 # -----------------------------------------
