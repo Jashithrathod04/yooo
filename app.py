@@ -8,6 +8,13 @@ from sklearn.cluster import KMeans
 from mlxtend.frequent_patterns import apriori, association_rules
 from scipy.stats import zscore
 
+
+
+
+
+def go_to(page):
+    st.session_state.page = page
+    st.rerun()
 # -----------------------------------------
 # PAGE CONFIG
 # -----------------------------------------
@@ -378,54 +385,45 @@ if st.session_state.page=="landing":
 
 if st.session_state.page=="profiles":
 
-    st.markdown("<h1 style='text-align:center;font-size:55px;'>Who's analyzing today?</h1>",unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align:center;font-size:55px;'>Who's analyzing today?</h1>", unsafe_allow_html=True)
 
-    col1,col2,col3 = st.columns(3)
+    # Detect which card was clicked
+    params = st.query_params
 
-    with col1:
+    if "profile" in params:
+        if params["profile"] == "jashith":
+            go_to("dashboard")
+        elif params["profile"] == "analyst":
+            go_to("dashboard")
+        elif params["profile"] == "add":
+            go_to("signup")
 
-        if st.container():
+    st.markdown("""
+    <div style="display:flex;justify-content:center;gap:80px;margin-top:80px;">
 
-            st.markdown("""
+        <a href="?profile=jashith" class="cardlink">
             <div class="metric-profile">
-            <img src="https://i.imgur.com/7yUvePI.png">
-            <p>Jashith</p>
+                <img src="https://i.imgur.com/7yUvePI.png">
+                <p>Jashith</p>
             </div>
-            """, unsafe_allow_html=True)
+        </a>
 
-            if st.button("",key="card1"):
-                st.session_state.page="dashboard"
-                st.rerun()
-
-    with col2:
-
-        if st.container():
-
-            st.markdown("""
+        <a href="?profile=analyst" class="cardlink">
             <div class="metric-profile">
-            <img src="https://i.imgur.com/9XnK9QK.png">
-            <p>Analyst</p>
+                <img src="https://i.imgur.com/9XnK9QK.png">
+                <p>Analyst</p>
             </div>
-            """, unsafe_allow_html=True)
+        </a>
 
-            if st.button("",key="card2"):
-                st.session_state.page="dashboard"
-                st.rerun()
-
-    with col3:
-
-        if st.container():
-
-            st.markdown("""
+        <a href="?profile=add" class="cardlink">
             <div class="metric-profile">
-            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png">
-            <p>Add Profile</p>
+                <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png">
+                <p>Add Profile</p>
             </div>
-            """, unsafe_allow_html=True)
+        </a>
 
-            if st.button("",key="card3"):
-                st.session_state.page="signup"
-                st.rerun()
+    </div>
+    """, unsafe_allow_html=True)
 # -----------------------------------------
 # SIGNUP PAGE
 # -----------------------------------------
