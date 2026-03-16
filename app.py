@@ -212,15 +212,33 @@ if st.session_state.page=="dashboard":
 # -----------------------------------------
 
    with tab1:
-        st.subheader("Dataset Overview")
-    
-        col1,col2,col3 = st.columns(3)
+       st.subheader("Dataset Overview")
+       col1,col2,col3 = st.columns(3)
     
         col1.metric("Total Stations", len(df))
         col2.metric("Operators", df["Station Operator"].nunique())
         col3.metric("Charger Types", df["Charger Type"].nunique())
     
         st.dataframe(df.head())
+    
+    
+
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+       
 
 # -----------------------------------------
 # DATA CLEANING
