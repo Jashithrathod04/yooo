@@ -338,6 +338,35 @@ color:white;
 a.cardlink{
 text-decoration:none;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.card-button button{
+opacity:0;
+height:180px;
+width:100%;
+position:absolute;
+top:0;
+left:0;
+cursor:pointer;
+}
+
+.card-wrapper{
+position:relative;
+}
 </style>
 """, unsafe_allow_html=True)
 # -----------------------------------------
@@ -385,45 +414,71 @@ if st.session_state.page=="landing":
 
 if st.session_state.page=="profiles":
 
-    st.markdown("<h1 style='text-align:center;font-size:55px;'>Who's analyzing today?</h1>", unsafe_allow_html=True)
+    st.markdown(
+    "<h1 style='text-align:center;font-size:55px;'>Who's analyzing today?</h1>",
+    unsafe_allow_html=True)
 
-    # Detect which card was clicked
-    params = st.query_params
+    col1,col2,col3 = st.columns(3)
 
-    if "profile" in params:
-        if params["profile"] == "jashith":
-            go_to("dashboard")
-        elif params["profile"] == "analyst":
-            go_to("dashboard")
-        elif params["profile"] == "add":
-            go_to("signup")
+    # PROFILE 1
+    with col1:
 
-    st.markdown("""
-    <div style="display:flex;justify-content:center;gap:80px;margin-top:80px;">
+        st.markdown('<div class="card-wrapper">', unsafe_allow_html=True)
 
-        <a href="?profile=jashith" class="cardlink">
-            <div class="metric-profile">
-                <img src="https://i.imgur.com/7yUvePI.png">
-                <p>Jashith</p>
-            </div>
-        </a>
+        st.markdown("""
+        <div class="metric-profile">
+            <img src="https://i.imgur.com/7yUvePI.png">
+            <p>Jashith</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-        <a href="?profile=analyst" class="cardlink">
-            <div class="metric-profile">
-                <img src="https://i.imgur.com/9XnK9QK.png">
-                <p>Analyst</p>
-            </div>
-        </a>
+        st.markdown('<div class="card-button">', unsafe_allow_html=True)
 
-        <a href="?profile=add" class="cardlink">
-            <div class="metric-profile">
-                <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png">
-                <p>Add Profile</p>
-            </div>
-        </a>
+        if st.button("profile1"):
+            st.session_state.page="dashboard"
+            st.rerun()
 
-    </div>
-    """, unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
+
+    # PROFILE 2
+    with col2:
+
+        st.markdown('<div class="card-wrapper">', unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="metric-profile">
+            <img src="https://i.imgur.com/9XnK9QK.png">
+            <p>Analyst</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<div class="card-button">', unsafe_allow_html=True)
+
+        if st.button("profile2"):
+            st.session_state.page="dashboard"
+            st.rerun()
+
+        st.markdown('</div></div>', unsafe_allow_html=True)
+
+    # ADD PROFILE
+    with col3:
+
+        st.markdown('<div class="card-wrapper">', unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="metric-profile">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png">
+            <p>Add Profile</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<div class="card-button">', unsafe_allow_html=True)
+
+        if st.button("profile3"):
+            st.session_state.page="signup"
+            st.rerun()
+
+        st.markdown('</div></div>', unsafe_allow_html=True)
 # -----------------------------------------
 # SIGNUP PAGE
 # -----------------------------------------
