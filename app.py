@@ -189,118 +189,103 @@ if st.session_state.page=="verify":
 # DASHBOARD
 # -----------------------------------------
 
+# -----------------------------------------
+# DASHBOARD
+# -----------------------------------------
+
 if st.session_state.page=="dashboard":
 
     st.title("SmartCharge Analytics Dashboard")
 
-    df=pd.read_csv("ev_charging_dataset.csv")
+    df = pd.read_csv("ev_charging_dataset.csv")
 
     tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9 = st.tabs([
-    "Overview",
-    "Data Cleaning",
-    "Usage Analysis",
-    "Cost & Operator Analysis",
-    "Correlation Analysis",
-    "Clustering",
-    "Association Rules",
-    "Anomaly Detection",
-    "Insights"
+        "Overview",
+        "Data Cleaning",
+        "Usage Analysis",
+        "Cost & Operator Analysis",
+        "Correlation Analysis",
+        "Clustering",
+        "Association Rules",
+        "Anomaly Detection",
+        "Insights"
     ])
 
-# -----------------------------------------
-# OVERVIEW
-# -----------------------------------------
+    # -----------------------------------------
+    # OVERVIEW
+    # -----------------------------------------
 
-   with tab1:
+    with tab1:
 
+        st.subheader("Dataset Overview")
 
+        col1,col2,col3 = st.columns(3)
 
-       st.subheader("Dataset Overview")
-       col1,col2,col3 = st.columns(3)
-    
         col1.metric("Total Stations", len(df))
         col2.metric("Operators", df["Station Operator"].nunique())
         col3.metric("Charger Types", df["Charger Type"].nunique())
-    
+
         st.dataframe(df.head())
-    
-    
 
-
-
-       
-
-
-
-
-
-
-
-
-
-
-
-
-       
-
-# -----------------------------------------
-# DATA CLEANING
-# -----------------------------------------
+    # -----------------------------------------
+    # DATA CLEANING
+    # -----------------------------------------
 
     with tab2:
 
         st.subheader("Missing Values")
-    
+
         st.dataframe(df.isnull().sum())
-    
+
         df.drop_duplicates(subset="Station ID", inplace=True)
-    
+
         st.success("Duplicate stations removed")
-    
+
         st.write("Dataset Shape:", df.shape)
 
-# -----------------------------------------
-# EDA
-# -----------------------------------------
+    # -----------------------------------------
+    # USAGE ANALYSIS
+    # -----------------------------------------
 
     with tab3:
 
         st.subheader("Usage Distribution")
-    
+
         fig = px.histogram(
             df,
             x="Usage Stats (avg users/day)",
             nbins=30,
             title="EV Charging Demand Distribution"
         )
-    
+
         st.plotly_chart(fig,use_container_width=True)
-        
+
         st.subheader("Usage Growth Over Time")
-    
+
         fig2 = px.line(
             df,
             x="Installation Year",
             y="Usage Stats (avg users/day)",
             title="Charging Usage Over Years"
         )
-    
+
         st.plotly_chart(fig2,use_container_width=True)
-# -----------------------------------------
-# CLUSTERING
-# -----------------------------------------
+
+    # -----------------------------------------
+    # COST ANALYSIS
+    # -----------------------------------------
 
     with tab4:
 
         st.subheader("Cost by Station Operator")
-    
+
         fig = px.box(
             df,
             x="Station Operator",
             y="Cost (USD/kWh)",
             title="Charging Cost Distribution"
         )
-    
+
         st.plotly_chart(fig,use_container_width=True)
 
         fig2 = px.scatter(
@@ -310,57 +295,55 @@ if st.session_state.page=="dashboard":
             color="Charger Type",
             title="Cost vs Charging Demand"
         )
-    
+
         st.plotly_chart(fig2,use_container_width=True)
 
-# -----------------------------------------
-# ASSOCIATION RULES
-# -----------------------------------------
+    # -----------------------------------------
+    # CORRELATION
+    # -----------------------------------------
 
     with tab5:
 
         st.subheader("Feature Correlation Heatmap")
-    
+
         import seaborn as sns
         import matplotlib.pyplot as plt
-    
+
         corr = df.corr(numeric_only=True)
-    
+
         fig,ax = plt.subplots()
-    
-        sns.heatmap(corr,
-                    annot=True,
-                    cmap="coolwarm",
-                    ax=ax)
-    
+
+        sns.heatmap(
+            corr,
+            annot=True,
+            cmap="coolwarm",
+            ax=ax
+        )
+
         st.pyplot(fig)
 
-# -----------------------------------------
-# ANOMALY DETECTION
-# -----------------------------------------
+    # -----------------------------------------
+    # CLUSTERING
+    # -----------------------------------------
 
     with tab6:
 
         st.subheader("Charging Station Clusters")
-    
-        from sklearn.preprocessing import StandardScaler
-        from sklearn.cluster import KMeans
-    
+
         features = df[[
-        "Cost (USD/kWh)",
-        "Charging Capacity (kW)",
-        "Usage Stats (avg users/day)",
-        "Distance to City (km)"
+            "Cost (USD/kWh)",
+            "Charging Capacity (kW)",
+            "Usage Stats (avg users/day)",
+            "Distance to City (km)"
         ]]
-    
+
         scaler = StandardScaler()
-    
         scaled = scaler.fit_transform(features)
-    
+
         kmeans = KMeans(n_clusters=4)
-    
+
         df["Cluster"] = kmeans.fit_predict(scaled)
-    
+
         fig = px.scatter(
             df,
             x="Charging Capacity (kW)",
@@ -368,60 +351,56 @@ if st.session_state.page=="dashboard":
             color="Cluster",
             title="Station Clustering"
         )
-    
+
         st.plotly_chart(fig,use_container_width=True)
 
-# -----------------------------------------
-# INSIGHTS
-# -----------------------------------------
+    # -----------------------------------------
+    # ASSOCIATION RULES
+    # -----------------------------------------
+
     with tab7:
 
         st.subheader("Frequent Feature Associations")
-    
-        from mlxtend.frequent_patterns import apriori
-        from mlxtend.frequent_patterns import association_rules
-    
+
         numeric = df.select_dtypes(include="number")
-    
+
         binary = (numeric > numeric.mean()).astype(int)
-    
+
         freq = apriori(binary, min_support=0.1, use_colnames=True)
-    
+
         rules = association_rules(freq, metric="lift", min_threshold=1)
-    
+
         st.dataframe(rules.head())
-    
+
         fig = px.bar(
             rules,
             x="support",
             y=rules["antecedents"].astype(str),
             title="Association Rules"
         )
-    
+
         st.plotly_chart(fig)
 
-
-
-
+    # -----------------------------------------
+    # ANOMALY DETECTION
+    # -----------------------------------------
 
     with tab8:
 
         st.subheader("Anomaly Detection")
-    
-        from scipy.stats import zscore
-    
+
         numeric = df.select_dtypes(include="number")
-    
+
         z = np.abs(zscore(numeric))
-    
+
         anomalies = (z > 3).any(axis=1)
-    
+
         df_anomaly = df[anomalies]
-    
+
         st.write("Detected Anomalies")
-    
+
         st.dataframe(df_anomaly)
-    
+
         fig = px.scatter(
             df,
             x="Cost (USD/kWh)",
@@ -429,21 +408,23 @@ if st.session_state.page=="dashboard":
             color=anomalies,
             title="Anomaly Detection Visualization"
         )
-    
+
         st.plotly_chart(fig)
 
-
+    # -----------------------------------------
+    # INSIGHTS
+    # -----------------------------------------
 
     with tab9:
 
         st.subheader("Key Insights")
-    
+
         st.markdown("""
         **Major Findings**
-    
+
         - DC Fast Chargers show the highest usage.
         - Stations near city centers experience greater demand.
         - Operators with lower costs attract more EV users.
         - Some stations show extremely high usage indicating potential infrastructure pressure.
         - Renewable energy powered stations tend to receive better ratings.
-        """)          
+        """)
