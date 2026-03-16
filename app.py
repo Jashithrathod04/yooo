@@ -24,40 +24,120 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-body {
-background: linear-gradient(135deg,#020617,#0f172a);
+/* MAIN BACKGROUND */
+
+.stApp{
+background: linear-gradient(-45deg,#020617,#0f172a,#1e293b,#020617);
+background-size:400% 400%;
+animation: gradientBG 15s ease infinite;
 color:white;
 }
 
-.glass {
-background: rgba(255,255,255,0.08);
+@keyframes gradientBG{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+
+/* FLOATING PARTICLES */
+
+.stApp::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:
+radial-gradient(circle at 20% 20%,rgba(56,189,248,0.15),transparent 25%),
+radial-gradient(circle at 80% 40%,rgba(168,85,247,0.15),transparent 25%),
+radial-gradient(circle at 60% 80%,rgba(244,114,182,0.15),transparent 25%);
+animation: floatBG 20s linear infinite;
+z-index:-1;
+}
+
+@keyframes floatBG{
+0%{transform:translateY(0px)}
+50%{transform:translateY(-60px)}
+100%{transform:translateY(0px)}
+}
+
+
+/* GLASS CARDS */
+
+.glass{
+background: rgba(255,255,255,0.06);
 backdrop-filter: blur(18px);
+border-radius:18px;
 padding:25px;
-border-radius:20px;
+border:1px solid rgba(255,255,255,0.15);
+transition:all 0.35s ease;
+box-shadow:0 8px 32px rgba(0,0,0,0.3);
+}
+
+.glass:hover{
+transform:translateY(-6px) scale(1.02);
+box-shadow:0 0 30px rgba(56,189,248,0.6);
+}
+
+
+/* METRIC CARDS */
+
+.metric-card{
+background: rgba(255,255,255,0.08);
+backdrop-filter: blur(12px);
+padding:20px;
+border-radius:16px;
 border:1px solid rgba(255,255,255,0.2);
+text-align:center;
 transition:0.3s;
 }
 
-.glass:hover {
-transform: scale(1.03);
-box-shadow:0 0 20px #38bdf8;
-}
-
-button {
-border-radius:12px;
-transition:0.3s;
-}
-
-button:hover {
+.metric-card:hover{
 transform:scale(1.05);
-box-shadow:0 0 10px #22d3ee;
+box-shadow:0 0 25px #38bdf8;
 }
+
+
+/* BUTTONS */
+
+button{
+border-radius:12px;
+background: linear-gradient(90deg,#38bdf8,#a78bfa);
+border:none;
+color:white;
+font-weight:600;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 15px #22d3ee;
+}
+
+
+/* TABS STYLE */
+
+div[data-baseweb="tab"]{
+font-size:16px;
+padding:10px;
+transition:0.3s;
+}
+
+div[data-baseweb="tab"]:hover{
+background:rgba(255,255,255,0.08);
+border-radius:10px;
+}
+
+
+/* ANIMATED HEADINGS */
 
 h1,h2,h3{
 background: linear-gradient(90deg,#38bdf8,#a78bfa,#f472b6);
 -webkit-background-clip:text;
 color:transparent;
-animation: hue 6s infinite linear;
+animation:hue 6s infinite linear;
 }
 
 @keyframes hue{
@@ -65,16 +145,24 @@ animation: hue 6s infinite linear;
 100%{filter:hue-rotate(360deg)}
 }
 
-.metric-card{
-background: rgba(255,255,255,0.07);
-padding:20px;
-border-radius:15px;
-text-align:center;
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+width:8px;
+}
+
+::-webkit-scrollbar-track{
+background:#020617;
+}
+
+::-webkit-scrollbar-thumb{
+background:linear-gradient(#38bdf8,#a78bfa);
+border-radius:10px;
 }
 
 </style>
 """, unsafe_allow_html=True)
-
 # -----------------------------------------
 # PAGE STATE
 # -----------------------------------------
